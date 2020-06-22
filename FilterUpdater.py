@@ -1,3 +1,7 @@
+#VERSON 0.9
+#BY C. FERRAZ
+#https://github.com/c-ferraz
+
 import requests
 import os,sys
 import re
@@ -10,7 +14,6 @@ url_very_strict = r"https://raw.githubusercontent.com/NeverSinkDev/NeverSink-Fil
 url_uber_strict = r"https://raw.githubusercontent.com/NeverSinkDev/NeverSink-Filter/master/NeverSink's%20filter%20-%205-UBER-STRICT.filter"
 url_uber_plus_strict = r"https://raw.githubusercontent.com/NeverSinkDev/NeverSink-Filter/master/NeverSink's%20filter%20-%206-UBER-PLUS-STRICT.filter"
 
-#find filter type
 def find_filter_type():
     current_filters = []
     filter_folder = 'C:\\Users\\'+os.getlogin()+'\\Documents\\My Games\\Path of Exile'
@@ -63,12 +66,12 @@ def find_filter_type():
 def get_filter_folder(): #TODO: Change folder selection to this method from find_filter_type
     pass
 
-def get_filter_version():
+def get_filter_version(): #TODO: Find most current filter version and compare both
     pass
 
 
+
 def update_filter(filters):
-    print(filters)
     for filter_type in filters:    
         filename = os.path.join('C:\\Users\\'+os.getlogin()+'\\Documents\\My Games\\Path of Exile',"NeverSink's filter - "+filter_type+".filter") #TODO: change to poe filter folder after testing
         if (filter_type == '0-SOFT'):
@@ -93,6 +96,5 @@ def update_filter(filters):
 
 
 filter_list = find_filter_type()
-#print(filter_list)
 update_filter(filter_list)
 print('\n\n\nFilter updated.')
