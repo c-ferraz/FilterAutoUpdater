@@ -1,4 +1,4 @@
-#VERSON 0.9.2
+#VERSON 1.0.0
 #BY C. FERRAZ
 #https://github.com/c-ferraz
 
@@ -6,6 +6,7 @@ import requests
 import os,sys
 import re
 import getpass
+import easygui
 
 url_soft = r"https://raw.githubusercontent.com/NeverSinkDev/NeverSink-Filter/master/NeverSink's%20filter%20-%200-SOFT.filter"
 url_regular = r"https://raw.githubusercontent.com/NeverSinkDev/NeverSink-Filter/master/NeverSink's%20filter%20-%201-REGULAR.filter"
@@ -15,31 +16,56 @@ url_very_strict = r"https://raw.githubusercontent.com/NeverSinkDev/NeverSink-Fil
 url_uber_strict = r"https://raw.githubusercontent.com/NeverSinkDev/NeverSink-Filter/master/NeverSink's%20filter%20-%205-UBER-STRICT.filter"
 url_uber_plus_strict = r"https://raw.githubusercontent.com/NeverSinkDev/NeverSink-Filter/master/NeverSink's%20filter%20-%206-UBER-PLUS-STRICT.filter"
 
-def find_filter_type():
-    current_filters = []
+def get_filter_folder(): 
     filter_folder = 'C:\\Users\\'+os.getlogin()+'\\Documents\\My Games\\Path of Exile'
     if not os.path.exists(filter_folder):
         print('The default folder for filters: '+filter_folder+'\nWas not found.')
-        quit()
-        #TODO: chose new folder or create a folder to save those files
+        print('Please choose the folder where filters are located.')
+        print('You can also choose any folder if you wish to install the filter automatically.')
+        while True:
+            filter_folder = easygui.diropenbox()
+            print('You have choosen the folder '+filter_folder+' Is this correct? (Y/N)')
+            answer = input().upper()
+            if (answer == 'Y'):
+                return filter_folder
+            if (answer == 'N'):
+                print('Do you wish to choose another folder? (Y/N)')
+                answer = input().upper()
+                while True:
+                    if (answer == 'Y'):
+                        break
+                    elif (answer == 'N'):
+                        print('Exiting the program.')
+                        getpass.getpass('\n\n\nPress ENTER to exit...')
+                        quit()
+                    print('Please enter only Y or N.')
+                    answer = input().upper()
+            print('Please enter only Y or N.')
+            answer = input().upper()
+    else:
+        return filter_folder
 
+
+def find_filter_type(filter_folder):
+    current_filters = []
     for files in os.listdir(filter_folder):
         if 'NeverSink' in files:
             filter_type = re.search(r'(\d-.*)\.filter', files)
             current_filters.append(filter_type.group(1))
     if len(current_filters) == 0:
-        answer = input('No NeverSkin filter found, do you wish to download one? (Y/N)')
+        print('No NeverSkin filter found, do you wish to download one? (Y/N)')
+        answer = input().upper()
         while True:
             if (answer.upper() == 'Y' or answer.upper() == 'N'):
                 break
             else:
-                answer = input('Choose Y or N.')
+                print('Please enter only Y or N.')
+                answer = input().upper()
         if (answer.upper() == 'Y'):
             print('Choose filter type:')
             print('0-SOFT\n1-REGULAR\n2-SEMI-STRICT\n3-STRICT\n4-VERY-STRICT\n5-UBER-STRICT\n6-UBER-PLUS-STRICT')
-            answer = input()
+            answer = input().upper()
             while True:
-                answer = answer.upper()
                 if answer == '0' or answer == 'SOFT' or answer == '0-SOFT':
                     return ['0-SOFT']
                 elif answer == '1' or answer == 'REGULAR' or answer == '1-REGULAR':
@@ -55,8 +81,10 @@ def find_filter_type():
                 elif answer == '6' or answer == 'UBER-PLUS-STRICT' or answer == 'UBER PLUS STRICT' or answer == '6-UBER-PLUS-STRICT' or answer == '6-UBER PLUS STRICT':
                     return ['6-UBER-PLUS-STRICT']
                 else:
-                    answer = input('Invalid choice, choose again.')
+                    print('Invalid choice, choose again.')
+                    answer = input().upper()
         elif (answer.upper() == 'N'):
+            getpass.getpass('\n\n\nPress ENTER to exit...')
             quit()
     else:
         return current_filters
@@ -64,17 +92,14 @@ def find_filter_type():
     raise Exception("ERROR: find_filter_type. TBF I don't even know if this can happen.")
 
 
-def get_filter_folder(): #TODO: Change folder selection to this method from find_filter_type
-    pass
-
-def get_filter_version(): #TODO: Find most current filter version and compare both
+def get_filter_version(): #TODO: Find updated and current filter version and compare both
     pass
 
 
 
-def update_filter(filters):
+def update_filter(filters, folder):
     for filter_type in filters:    
-        filename = os.path.join('C:\\Users\\'+os.getlogin()+'\\Documents\\My Games\\Path of Exile',"NeverSink's filter - "+filter_type+".filter") #TODO: change to poe filter folder after testing
+        filename = os.path.join(folder,"NeverSink's filter - "+filter_type+".filter") #TODO: change to poe filter folder after testing
         if (filter_type == '0-SOFT'):
             git_file = requests.get(url_soft)
         elif (filter_type == '1-REGULAR'):
@@ -95,7 +120,27 @@ def update_filter(filters):
         filter_file = open(filename,'wb')
         filter_file.write(git_file.content)
 
+folder = get_filter_folder()
+filters = find_filter_type(folder)
 
-filter_list = find_filter_type()
-update_filter(filter_list)
-getpass.getpass('\n\n\nPress ENTER to exit...')
+print('Using folder: ' + folder)
+print('For filter selection...')
+print('The following Filters will be updated:')
+for filter in filters:
+    print(filter)
+print('Do you wish to continue with update? (Y/N)')
+answer = input().upper()
+while True:
+    if (answer == 'Y'):
+        break
+    if (answer == 'N'):
+        print('Exiting the program.')
+        getpass.getpass('\n\n\nPress ENTER to exit...')
+        quit()
+    print('Please enter only Y or N.')
+    answer = input().upper()
+
+update_filter(filters, folder)
+
+print('\n\n\nUpdate complete.')
+getpass.getpass('Press ENTER to exit...')
