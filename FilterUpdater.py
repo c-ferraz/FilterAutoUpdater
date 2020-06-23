@@ -1,4 +1,4 @@
-#VERSON 1.0.0
+#VERSON 1.0.1
 #BY C. FERRAZ
 #https://github.com/c-ferraz
 
@@ -18,32 +18,37 @@ url_uber_plus_strict = r"https://raw.githubusercontent.com/NeverSinkDev/NeverSin
 
 def get_filter_folder(): 
     filter_folder = 'C:\\Users\\'+os.getlogin()+'\\Documents\\My Games\\Path of Exile'
-    if not os.path.exists(filter_folder):
+    if True:#not os.path.exists(filter_folder):
         print('The default folder for filters: '+filter_folder+'\nWas not found.')
-        print('Please choose the folder where filters are located.')
-        print('You can also choose any folder if you wish to install the filter automatically.')
+        print('You can choose any folder if you wish only to download a filter.')
         while True:
+            print('Please choose the folder where filters are located.')
             filter_folder = easygui.diropenbox()
-            print('You have choosen the folder '+filter_folder+' Is this correct? (Y/N)')
-            answer = input().upper()
-            if (answer == 'Y'):
-                return filter_folder
-            if (answer == 'N'):
-                print('Do you wish to choose another folder? (Y/N)')
+            answer = ''
+            while not (answer == 'Y'):
+                print('You have choosen the folder '+filter_folder+' Is this correct? (Y/N)')
                 answer = input().upper()
-                while True:
-                    if (answer == 'Y'):
-                        break
-                    elif (answer == 'N'):
-                        print('Exiting the program.')
-                        getpass.getpass('\n\n\nPress ENTER to exit...')
-                        quit()
+                if (answer == 'Y'):
+                    return filter_folder
+                if (answer == 'N'):
+                    print('Do you wish to choose another folder? (Y/N)')
+                    answer = input().upper()
+                    while not (answer == 'Y'):
+                        if (answer == 'Y'):
+                            pass
+                        elif (answer == 'N'):
+                            print('Exiting the program.')
+                            getpass.getpass('\n\n\nPress ENTER to exit...')
+                            quit()
+                        else:
+                            print('Please enter only Y or N.')
+                            answer = input().upper()
+                else:
                     print('Please enter only Y or N.')
                     answer = input().upper()
-            print('Please enter only Y or N.')
-            answer = input().upper()
     else:
         return filter_folder
+    raise Exception('ERROR: This should never happen...')
 
 
 def find_filter_type(filter_folder):
@@ -89,12 +94,17 @@ def find_filter_type(filter_folder):
     else:
         return current_filters
 
-    raise Exception("ERROR: find_filter_type. TBF I don't even know if this can happen.")
+    raise Exception('ERROR: This should never happen...')
 
 
 def get_filter_version(): #TODO: Find updated and current filter version and compare both
     pass
 
+
+def install_my_custom(): #TODO: If yes, download STRICT filter and add my custom changes to it, also copy .mp3 files into filters folder
+    print('Do you wish to install my custom NeverSink STRICT filter? (Y/N)')
+    answer = input()
+    pass
 
 
 def update_filter(filters, folder):
@@ -115,7 +125,7 @@ def update_filter(filters, folder):
         elif (filter_type == '6-UBER-PLUS-STRICT'):
             git_file = requests.get(url_uber_plus_strict)
         else:
-            raise Exception('ERROR: git_file failed to find correct filter_type')
+            raise Exception('ERROR: git_file failed to find correct filter_type, this is probably a error in the find_filter_type() method')
 
         filter_file = open(filename,'wb')
         filter_file.write(git_file.content)
@@ -144,3 +154,4 @@ update_filter(filters, folder)
 
 print('\n\n\nUpdate complete.')
 getpass.getpass('Press ENTER to exit...')
+quit()
