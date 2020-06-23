@@ -1,4 +1,4 @@
-#VERSON 1.0.1
+#VERSON 1.0.2
 #BY C. FERRAZ
 #https://github.com/c-ferraz
 
@@ -18,7 +18,7 @@ url_uber_plus_strict = r"https://raw.githubusercontent.com/NeverSinkDev/NeverSin
 
 def get_filter_folder(): 
     filter_folder = 'C:\\Users\\'+os.getlogin()+'\\Documents\\My Games\\Path of Exile'
-    if True:#not os.path.exists(filter_folder):
+    if not os.path.exists(filter_folder):
         print('The default folder for filters: '+filter_folder+'\nWas not found.')
         print('You can choose any folder if you wish only to download a filter.')
         while True:
