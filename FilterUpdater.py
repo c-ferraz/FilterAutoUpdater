@@ -1,10 +1,11 @@
-#VERSON 0.9
+#VERSON 0.9.2
 #BY C. FERRAZ
 #https://github.com/c-ferraz
 
 import requests
 import os,sys
 import re
+import getpass
 
 url_soft = r"https://raw.githubusercontent.com/NeverSinkDev/NeverSink-Filter/master/NeverSink's%20filter%20-%200-SOFT.filter"
 url_regular = r"https://raw.githubusercontent.com/NeverSinkDev/NeverSink-Filter/master/NeverSink's%20filter%20-%201-REGULAR.filter"
@@ -97,4 +98,4 @@ def update_filter(filters):
 
 filter_list = find_filter_type()
 update_filter(filter_list)
-print('\n\n\nFilter updated.')
+getpass.getpass('\n\n\nPress ENTER to exit...')
