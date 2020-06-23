@@ -1,4 +1,4 @@
-#VERSON 1.0.2
+#VERSON 1.0.3
 #BY C. FERRAZ
 #https://github.com/c-ferraz
 
@@ -39,7 +39,7 @@ def get_filter_folder():
                         elif (answer == 'N'):
                             print('Exiting the program.')
                             getpass.getpass('\n\n\nPress ENTER to exit...')
-                            quit()
+                            sys.exit()
                         else:
                             print('Please enter only Y or N.')
                             answer = input().upper()
@@ -90,7 +90,7 @@ def find_filter_type(filter_folder):
                     answer = input().upper()
         elif (answer.upper() == 'N'):
             getpass.getpass('\n\n\nPress ENTER to exit...')
-            quit()
+            sys.exit()
     else:
         return current_filters
 
@@ -146,7 +146,7 @@ while True:
     if (answer == 'N'):
         print('Exiting the program.')
         getpass.getpass('\n\n\nPress ENTER to exit...')
-        quit()
+        sys.exit()
     print('Please enter only Y or N.')
     answer = input().upper()
 
@@ -154,4 +154,4 @@ update_filter(filters, folder)
 
 print('\n\n\nUpdate complete.')
 getpass.getpass('Press ENTER to exit...')
-quit()
+sys.exit()
